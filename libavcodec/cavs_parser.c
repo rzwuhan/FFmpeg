@@ -104,3 +104,11 @@ AVCodecParser ff_cavsvideo_parser = {
     .parser_close   = ff_parse_close,
     .split          = ff_mpeg4video_split,
 };
+
+AVCodecParser ff_cavs2video_parser = {
+    .codec_ids      = { AV_CODEC_ID_CAVS2 },
+    .priv_data_size = sizeof(ParseContext),
+    .parser_parse   = cavsvideo_parse,
+    .parser_close   = ff_parse_close,
+    .split          = ff_mpeg4video_split,
+};

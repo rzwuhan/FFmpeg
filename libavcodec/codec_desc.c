@@ -651,6 +651,13 @@ static const AVCodecDescriptor codec_descriptors[] = {
         .props     = AV_CODEC_PROP_LOSSY | AV_CODEC_PROP_REORDER,
     },
     {
+        .id        = AV_CODEC_ID_CAVS2,
+        .type      = AVMEDIA_TYPE_VIDEO,
+        .name      = "cavs2",
+        .long_name = NULL_IF_CONFIG_SMALL("Chinese AVS2 (Audio Video Standard)"),
+        .props     = AV_CODEC_PROP_LOSSY | AV_CODEC_PROP_REORDER,
+    },
+    {
         .id        = AV_CODEC_ID_JPEG2000,
         .type      = AVMEDIA_TYPE_VIDEO,
         .name      = "jpeg2000",

@@ -291,6 +291,8 @@ static int flv_same_video_codec(AVCodecParameters *vpar, int flags)
         return vpar->codec_id == AV_CODEC_ID_VP6A;
     case FLV_CODECID_H264:
         return vpar->codec_id == AV_CODEC_ID_H264;
+    case FLV_CODECID_CAVS2:
+        return vpar->codec_id == AV_CODEC_ID_CAVS2;
     default:
         return vpar->codec_tag == flv_codecid;
     }
@@ -339,6 +341,9 @@ static int flv_set_video_codec(AVFormatContext *s, AVStream *vstream,
     case FLV_CODECID_MPEG4:
         par->codec_id = AV_CODEC_ID_MPEG4;
         ret = 3;
+        break;
+    case FLV_CODECID_CAVS2:
+        par->codec_id = AV_CODEC_ID_CAVS2;
         break;
     default:
         avpriv_request_sample(s, "Video codec (%x)", flv_codecid);

@@ -276,6 +276,7 @@ External library support:
   --enable-libx264         enable H.264 encoding via x264 [no]
   --enable-libx265         enable HEVC encoding via x265 [no]
   --enable-libxavs         enable AVS encoding via xavs [no]
+  --enable-libuavs2d       enable AVS2 decoding via uavs2d [no]
   --enable-libxcb          enable X11 grabbing using XCB [autodetect]
   --enable-libxcb-shm      enable X11 grabbing shm communication [autodetect]
   --enable-libxcb-xfixes   enable X11 grabbing mouse rendering [autodetect]
@@ -1637,6 +1638,7 @@ EXTERNAL_LIBRARY_GPL_LIST="
     libx264
     libx265
     libxavs
+    libuavs2d
     libxvid
 "
 
@@ -3086,6 +3088,7 @@ libx264rgb_encoder_deps="libx264 x264_csp_bgr"
 libx264rgb_encoder_select="libx264_encoder"
 libx265_encoder_deps="libx265"
 libxavs_encoder_deps="libxavs"
+libuavs2d_decoder_deps="libuavs2d"
 libxvid_encoder_deps="libxvid"
 libzvbi_teletext_decoder_deps="libzvbi"
 videotoolbox_suggest="coreservices"
@@ -6083,6 +6086,7 @@ enabled libx264           && { check_pkg_config libx264 x264 "stdint.h x264.h" x
 enabled libx265           && require_pkg_config libx265 x265 x265.h x265_api_get &&
                              require_cpp_condition x265.h "X265_BUILD >= 68"
 enabled libxavs           && require libxavs "stdint.h xavs.h" xavs_encoder_encode "-lxavs $pthreads_extralibs $libm_extralibs"
+enabled libuavs2d         && require libuavs2d uavs2d.h uavs2d_lib_decode "-luavs2d $pthreads_extralibs $libm_extralibs"
 enabled libxvid           && require libxvid xvid.h xvid_global -lxvidcore
 enabled libzimg           && require_pkg_config libzimg "zimg >= 2.7.0" zimg.h zimg_get_api_version
 enabled libzmq            && require_pkg_config libzmq libzmq zmq.h zmq_ctx_new
