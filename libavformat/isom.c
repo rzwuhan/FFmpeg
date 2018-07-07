@@ -36,7 +36,6 @@ const AVCodecTag ff_mp4_obj_type[] = {
     { AV_CODEC_ID_MPEG4       , 0x20 },
     { AV_CODEC_ID_H264        , 0x21 },
     { AV_CODEC_ID_HEVC        , 0x23 },
-    { AV_CODEC_ID_CAVS2       , 0x24 },
     { AV_CODEC_ID_AAC         , 0x40 },
     { AV_CODEC_ID_MP4ALS      , 0x40 }, /* 14496-3 ALS */
     { AV_CODEC_ID_MPEG2VIDEO  , 0x61 }, /* MPEG-2 Main */
@@ -251,7 +250,7 @@ const AVCodecTag ff_codec_movvideo_tags[] = {
 
     { AV_CODEC_ID_VC1, MKTAG('v', 'c', '-', '1') }, /* SMPTE RP 2025 */
     { AV_CODEC_ID_CAVS, MKTAG('a', 'v', 's', '2') },
-    { AV_CODEC_ID_CAVS2, MKTAG('c', 'a', 'v', '2') },
+    { AV_CODEC_ID_AVS2, MKTAG('a', 'v', 's', '2') },
 
     { AV_CODEC_ID_DIRAC,     MKTAG('d', 'r', 'a', 'c') },
     { AV_CODEC_ID_DNXHD,     MKTAG('A', 'V', 'd', 'n') }, /* AVID DNxHD */

@@ -67,24 +67,19 @@ static int cavsvideo_probe(AVProbeData *p)
     return 0;
 }
 
-static int cavs2video_probe(AVProbeData *p)
+static int avs2video_probe(AVProbeData *p)
 {
-    uint32_t code= -1;
-    int pic=0, seq=0, slice_pos = 0;
-    const uint8_t *ptr = p->buf, *end = p->buf + p->buf_size;
+    uint32_t code = -1;
+    int pic = 0, seq = 0, slice_pos = 0;
+    int i;
     int ret = 0;
-    int cnt = 0;
 
-    while (ptr < end) {
-        ptr = avpriv_find_start_code(ptr, end, &code);
-        av_log(NULL, AV_LOG_ERROR, "start=%02x %02x %02x %02x\n", *(ptr-4), *(ptr-3), *(ptr-2), *(ptr-1));
+    for (i = 0; i < p->buf_size; i++) {
+        code = (code << 8) + p->buf[i];
         if ((code & 0xffffff00) == 0x100) {
-            cnt ++;
-            if(cnt>50) return AVPROBE_SCORE_EXTENSION+2;
-
-            if(code < CAVS_SEQ_START_CODE) {
+            if (code < CAVS_SEQ_START_CODE) {
                 /* slices have to be consecutive */
-                if(code < slice_pos)
+                if (code < slice_pos)
                     return 0;
                 slice_pos = code;
             } else {
@@ -93,30 +88,29 @@ static int cavs2video_probe(AVProbeData *p)
             if (code == CAVS_SEQ_START_CODE) {
                 seq++;
                 /* check for the only currently supported profile */
-//                if (*ptr != CAVS_PROFILE_JIZHUN){
-                    av_log(NULL, AV_LOG_ERROR, "profile=%02x\n", *ptr);
-//                    return 0;
-//                }
+                if (p->buf[i + 1] != CAVS_PROFILE_JIZHUN)
+                    return 0;
             } else if ((code == CAVS_PIC_I_START_CODE) ||
                        (code == CAVS_PIC_PB_START_CODE)) {
                 pic++;
             } else if ((code == CAVS_UNDEF_START_CODE) ||
-                       (code >  CAVS_VIDEO_EDIT_CODE)) {
+                       (code > CAVS_VIDEO_EDIT_CODE)) {
                 return 0;
             }
         }
     }
-    if(seq && pic) {
-        // const char *str = p->filename + strlen(p->filename) - 5;
-        // if (tolower(str[0]) == 'c' && tolower(str[1]) == 'a' && tolower(str[2]) == 'v' &&tolower(str[3]) == 's' && str[4] == '2') {
-            ret = AVPROBE_SCORE_EXTENSION+2;
-        // }
+    if (seq && pic) {
+//        const char *str = p->filename + strlen(p->filename) - 5;
+//        if (tolower(str[0]) == 'x' && tolower(str[1]) == 'a' && tolower(str[2]) == 'v' && tolower(str[3]) == 's' &&
+//            str[4] == '2') {
+            ret = AVPROBE_SCORE_EXTENSION + 2;
+//        }
     }
-    av_log(NULL, AV_LOG_ERROR, "cavs2video_probe ret=%d\n", ret);
     return ret;
 }
 
 
+
 FF_DEF_RAWVIDEO_DEMUXER(cavsvideo, "raw Chinese AVS (Audio Video Standard)", cavsvideo_probe, NULL, AV_CODEC_ID_CAVS)
 
-FF_DEF_RAWVIDEO_DEMUXER(cavs2video, "raw Chinese AVS2 (Audio Video Standard)", cavs2video_probe, "cavs2", AV_CODEC_ID_CAVS2)
+FF_DEF_RAWVIDEO_DEMUXER(avs2video, "raw Chinese AVS2 (Audio Video Standard)", avs2video_probe, "avs2", AV_CODEC_ID_AVS2)
